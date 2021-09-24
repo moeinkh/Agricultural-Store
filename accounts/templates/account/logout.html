@@ -1,0 +1,22 @@
+{% extends "products/index.html" %}
+
+{% block title %}
+  خروج
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 m-5 ">
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                <h2 class="mb-2">آیا می خواهید از حساب خود خارج شوید؟</h2>
+                <button class="site-btn" type="submit">بله</button>
+                <a class="site-btn bg-danger" href="{% url 'product:home' %}">خیر</a>
+            </form>
+        </div> 
+    </div>
+</div>
+         
+{% endblock content %}
