@@ -1,0 +1,206 @@
+{% extends "products/index.html" %}
+{% load static %}
+
+
+
+{% block title %}
+  {{ product.name }}
+{% endblock title %}
+
+{% block content %}
+
+        <!-- Breadcrumb Section Begin -->
+        <section class="breadcrumb-section set-bg" data-setbg="{% static 'products/img/breadcrumb.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="breadcrumb__text">
+                            <h2>{{ product.name }}</h2>
+                            <div class="breadcrumb__option">
+                                <a href="{% url 'product:home' %}">خانه</a>
+                                <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+                                <span>{{ product.name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb Section End -->
+
+        <!-- Product Details Section Begin -->
+        <section class="product-details spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product__details__pic">
+                            <div class="product__details__pic__item">
+                                <img class="product__details__pic__item--large"
+                                    src="{{ product.image.url }}" alt="">
+                            </div>
+                            <div class="product__details__pic__slider owl-carousel">
+                                {% for img in images %}
+                                    <img data-imgbigurl="{{ img.image.url }}"
+                                    src="{{ img.image.url }}" alt="{{ img.title }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product__details__text">
+                            <h3>{{ product.name }}</h3>
+                            <div class="product__details__rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                                <span>(18 reviews)</span>
+                            </div>
+                            <div class="product__details__price">{{ product.price }}تومان</div>
+                            <p>{{ product.low_description }}</p>
+                            <div class="product__details__quantity">
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input type="text" max="{{ product.count }}" min="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="primary-btn">افزودن به سبد</a>
+                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            <ul>
+                                <li><b>وضعیت:</b> <span>{% if product.available %}موجود {%else%} ناموجود {% endif %}</span></li>
+                                <li><b>کشور:</b> <span>{{ product.country }}</span></li>
+                                <li><b>وزن:</b> <span>{{ product.weight }}کیلو گرم</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                                        aria-selected="false">نظرات <span>{% with comments.count as total_comments %} ({{total_comments}}){% endwith %}</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                                        aria-selected="false">اطلاعات کلی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                                        aria-selected="true">توضیحات</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                    <div class="product__details__tab__desc">
+                                        <h6>اطلاعات محصول</h6>
+                                        <p>{{ product.total_description|safe }}</p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                    <div class="product__details__tab__desc">
+                                        <h6>اطلاعات کلی محصول</h6>
+                                        <ul>
+                                            {% if product.country %}
+                                                <li><b>کشور:</b> <span>{{ product.country }}</span></li>
+                                            {% endif %}
+                                            {% if product.weight %}
+                                                <li><b>وزن:</b> <span>{{ product.weight }}کیلو گرم</span></li>
+                                            {% endif %}
+                                            {% if product.volume %}
+                                                <li><b>جحم:</b> <span>{{ product.volume }}لیتر</span></li>
+                                            {% endif %}
+                                            {% if product.formulation %}
+                                                <li><b>فرمولاسیون:</b> <span>{{ product.formulation }}</span></li>
+                                            {% endif %}
+                                            {% if product.packing %}
+                                                <li><b>بسته بندی:</b> <span>{{ product.packing }}</span></li>
+                                            {% endif %}
+                                            {% if product.Elements %}
+                                                <li><b>عناصر:</b> <span>{{ product.Elements }}</span></li>
+                                            {% endif %}
+                                            {% if product.brand %}
+                                            <li><b>برند:</b> <span>{{ product.brand }}</span></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                    <div class="product__details__tab__desc">
+                                            <!-- Contact Form Begin -->
+                                            <div class="contact-form spad">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="contact__form__title">
+                                                                <h2>ارسال نظر</h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <form method='POST' action="{% url 'product:add_comment'  id=product.id %}">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-lg-12 text-right">
+                                                                <textarea name='comment' placeholder="نظر خود را درباره ی این محصول بنویسید..."></textarea>
+                                                                <button type="submit" class="site-btn">ثبت نظر</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-right">
+                                                            {% for com in comments %}
+                                                                <div class="border mt-2 p-2 rounded">
+                                                                   <p style="font-size: 12px;"> نظر {{ forloop.counter }} توسط {{ com.user.username }} در
+                                                                    {{ com.created_at }}</p>
+                                                                    <p>{{ com.comment|linebreaks }}</p>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Contact Form End -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Product Details Section End -->
+
+        <!-- Related Product Section Begin -->
+        <section class="related-product">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title related__product__title">
+                            <h2>محصولات مرتبط</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for product in related_product %}
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="{{ product.image.url }}">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
+                                    <h5>{{ product.price }}تومان</h5>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <!-- Related Product Section End -->
+{% endblock content %}

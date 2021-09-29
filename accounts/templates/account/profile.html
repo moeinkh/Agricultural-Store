@@ -1,0 +1,44 @@
+{% extends "products/index.html" %}
+
+{% block title %}
+   پروفایل
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <tbody>
+                  <tr>
+                    <td><strong>نام</strong></td>
+                    <td></td>
+                    <td>{{ user.first_name }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>نام خوادگی</strong></td>
+                    <td></td>
+                    <td>{{ user.last_name }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>نام کاربری</strong></td>
+                    <td></td>
+                    <td>{{ user.username }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>ایمیل</strong></td>
+                    <td></td>
+                    <td>{{ user.email }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>تلفن</strong></td>
+                    <td></td>
+                    <td>{{ user.phone }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <a class="site-btn m-2" href="{% url 'account_change_password'   %}">تغییر رمز عبور</a>
+              <a class="site-btn m-2" href="{% url 'edit_profile' %}">تغییر پروفایل</a>
+        </div>
+    </div>
+{% endblock content %}
