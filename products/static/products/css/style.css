@@ -1680,7 +1680,7 @@ ol {
 	font-weight: 700;
 	line-height: 28px;
 	text-align: center;
-	margin-left: 16px;
+	margin-right: 16px;
 	-webkit-transition: all, 0.3s;
 	-moz-transition: all, 0.3s;
 	-ms-transition: all, 0.3s;
@@ -2019,6 +2019,14 @@ ol {
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty .qtybtn {
 	width: 15px;
+}
+
+.shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty button {
+	padding: 10px;
+    border: none;
+    font-size: 8px;
+    width: 50px;
+    height: 40px;
 }
 
 .primary-btn.cart-btn {

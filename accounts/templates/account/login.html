@@ -118,6 +118,7 @@
                         {% for error in field.errors %}
                             <div class="alert alert-danger">
                                 <strong>{{ error|escape }}</strong>
+                                (<strong>{{ field.label|escape }}</strong>)
                             </div>
                         {% endfor %}
                     {% endfor %}
@@ -126,7 +127,7 @@
                             <strong>{{ error|escape }}</strong>
                         </div>
                     {% endfor %}
-                {% endif %}
+                {% endif %} 
             </form>
         </div>
     </div>

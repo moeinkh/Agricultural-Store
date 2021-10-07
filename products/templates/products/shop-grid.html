@@ -300,7 +300,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            {% for pro in product %}
+                            {% for pro in page_obj %}
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" data-setbg="{{ pro.image.url }}">
@@ -319,10 +319,30 @@
                             {% endfor %}
 
                         <div class="col-12 product__pagination">
-                            <a href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#"><i class="fa fa-long-arrow-left"></i></a>
+                            {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-long-arrow-right"></i></a>
+                                {% if page_obj.number > 3 %}
+                                    <a href="?page=1">1</a>
+                                {% endif %}
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <span class="current">
+                                        <a href="" style="background-color: #7fad39; color: #fff;">{{ page_obj.number }}</a>
+                                    </span>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <a href="?page={{num}}">{{num}}</a>
+                                {% endif %}
+                            {% endfor %}
+
+
+                            {% if page_obj.has_next %}
+                                {% if page_obj.number < 3 %}
+                                    <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                                {% endif %}
+                                <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-long-arrow-left"></i></a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

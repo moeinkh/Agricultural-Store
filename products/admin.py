@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Brand, Product, Images, Comment
+from .models import Category, Brand, Product, Images, Comment, IpAddress, ProductHit
 from mptt.admin import DraggableMPTTAdmin
 
 # Register your models here.
@@ -32,7 +32,7 @@ class ProductImageInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'brand', 'country', 'weight', 'volume', 'count', 'price', 'available', 'image_tag']
-    list_filter = ['name', 'country', 'created_at', 'available',]
+    list_filter = ['country', 'brand', 'created_at', 'available',]
     search_fields = ('name', 'country', 'brand', 'category')
     readonly_fields = ('image_tag',)
     inlines = [ProductImageInline]
@@ -42,3 +42,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ['user', 'product', 'active'] 
     list_filter = ['active', 'created_at']
     search_fields = ('user', 'product')    
+
+admin.site.register(IpAddress)    
+admin.site.register(ProductHit)    

@@ -46,6 +46,20 @@ class Brand(models.Model):
     def __str__(self):
         return self.name
 
+
+class IpAddress(models.Model):
+
+    class Meta:
+        verbose_name = 'بازدید'
+        verbose_name_plural = 'بازدید ها'
+
+    ip_address = models.GenericIPAddressField('آدرس آی پی')
+
+    def __str__(self):
+        return self.ip_address
+
+
+
 class Product(models.Model):
 
     class Meta:
@@ -70,12 +84,19 @@ class Product(models.Model):
     available = models.BooleanField('موجود', default=False)
     total_description = RichTextField('توضیحات کامل')
 
+    hits = models.ManyToManyField(IpAddress, blank=True, related_name='hits', verbose_name='بازدید ها')
+
     created_at = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
     updated_at = models.DateTimeField('تاریخ بروز رسانی', auto_now=True)
 
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.count == 0:
+            self.available = False
+        super().save(*args, **kwargs)      
 
     def image_tag(self):
         return format_html('<img src="{}" height="50" width="75" style="border-radius: 5px" />'.format(self.image.url))
@@ -110,5 +131,14 @@ class Comment(models.Model):
     created_at = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
     updated_at = models.DateTimeField('تاریخ بروز رسانی', auto_now=True)
 
-    def __Str__(self):
-        return self.user.username
+    def __str__(self):
+        return f'{self.user.username} برای {self.product.name}'
+
+class ProductHit(models.Model):
+    class Meta:
+        verbose_name = 'بازدید کننده های محصول'
+        verbose_name_plural = 'بازدید کننده های محصولات'
+
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='محصول')
+    ip_address = models.ForeignKey('IpAddress', on_delete=models.CASCADE, verbose_name='آدرس آی پی')
+    created_at = models.DateTimeField('تاریخ بازدید', auto_now_add=True)    

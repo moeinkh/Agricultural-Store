@@ -1,0 +1,80 @@
+{% extends "products/index.html" %}
+
+{% block title %}
+  سفارش {{ order.id }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 table-responsive">
+                <table class="table">
+                    <tr>
+                        <th>تاریخ سفارش</th>
+                        <td>{{ order.created_at }}</td>
+                    </tr>
+                    <tr>
+                        <th>کاربر</th>
+                        <td>{{ order.first_name }} {{ order.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>ایمیل</th>
+                        <td>{{ order.user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>آدرس</th>
+                        <td>{{ order.address }}</td>
+                    </tr>
+                    <tr>
+                        <th>کد پستی</th>
+                        <td>{{ order.postal_code }}</td>
+                    </tr>
+                    <tr>
+                        <th>مبلغ کل</th>
+                        <td>{{ order.get_total_cost|floatformat:0 }} تومان</td>
+                    </tr>
+                    <tr>
+                        <th>وضعیت</th>
+                        <td>{% if order.paid %}پرداخت شد{% else %}پرداخت نشده است{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>کد تخفیف</th>
+                        <td>{% if order.coupon %} کد {{order.coupon}} با تخفیف {{order.discount}} درصدی  {% else %}ندارد{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>کد سفارش</th>
+                        <td><span class="badge badge-info">{{ order.order_code }}</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-12 table-responsive">
+                <h2 class="mb-2 bold">محصولات خریداری شده</h2>
+                <table class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>محصول</th>
+                            <th>قیمت</th>
+                            <th>تعداد</th>
+                            <th>کل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                            <tr class="row{% cycle '1' '2' %}">
+                            <td>{{ item.product.name }}</td>
+                            <td class="num">{{ item.price }} تومان</td>
+                            <td class="num">{{ item.quantity }}</td>
+                            <td class="num">{{ item.get_cost }} تومان</td>
+                            </tr>
+                        {% endfor %}
+                        <tr class="total">
+                            <td colspan="3">مبلغ قابل پرداخت</td>
+                            <td class="num">{{ order.get_total_cost|floatformat:0  }} تومان</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

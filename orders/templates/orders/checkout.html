@@ -1,0 +1,115 @@
+{% extends "products/index.html" %}
+{% load static %}
+
+{% block title %}
+    تکمیل سفارش
+{% endblock title %}
+
+
+{% block content %}
+        <!-- Breadcrumb Section Begin -->
+        <section class="breadcrumb-section set-bg" data-setbg="{% static 'products/img/breadcrumb.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="breadcrumb__text">
+                            <h2>Checkout</h2>
+                            <div class="breadcrumb__option">
+                                <a href="{% url 'product:home' %}">خانه</a>
+                                <span>تکمیل خرید</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb Section End -->
+    
+        <!-- Checkout Section Begin -->
+        <section class="checkout spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click here</a> to enter your code
+                        </h6>
+                    </div>
+                </div>
+                <div class="checkout__form">
+                    <h4>جزئیات سفارش</h4>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-8 col-md-6">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>نام<span>*</span></p>
+                                            <input type="text" name="first_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>نام خانوادگی<span>*</span></p>
+                                            <input type="text" name="last_name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkout__input">
+                                    <p>شهر<span>*</span></p>
+                                    <input type="text" name="city">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>آدرس<span>*</span></p>
+                                    <input type="text" name="address" placeholder="آدرس کامل" class="checkout__input__add">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>تلفن<span>*</span></p>
+                                            <input type="text" name="phone_number">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>کد پستی<span>*</span></p>
+                                            <input type="text" name="postal_code">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="checkout__order">
+                                    <h4>Your Order</h4>
+                                    <div class="checkout__order__products">کل محصولات</div>
+                                    <ul>
+                                        {% for item in cart %}
+                                            <li>{{ item.product.name }} {{ item.quantity }}x<span>{{ item.total_price }} تومان</span></li>
+                                        {% endfor %}
+                                    </ul>
+                                    <hr>
+                                    <div class="checkout__order__total">کل <span>{{ cart.get_total_price_after_discount|floatformat:0 }} تومان</span></div>
+                                    <button type="submit" class="site-btn">ثبت سفارش</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                        (<strong>{{ field.label|escape }}</strong>)
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- Checkout Section End -->
+{% endblock content %}

@@ -1,4 +1,6 @@
+{% load i18n %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -14,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     <link rel="stylesheet" href="{% static 'products/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'products/css/font-awesome.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'products/css/elegant-icons.css' %}" type="text/css">
@@ -40,7 +43,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="{% url 'cart:cart_details' %}"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
         </div>
         <div class="humberger__menu__widget">
@@ -80,7 +83,7 @@
                     </ul>
                 </li>
                 <li><a href="./blog.html">بلاگ</a></li>
-                <li><a href="./contact.html">تماس با ما</a></li>
+                <li><a href="{% url 'product:contact' %}">تماس با ما</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -134,7 +137,7 @@
                                     <span class="arrow_carrot-down"></span>
                                     <ul class="header__menu__dropdown" style="text-align: right;">
                                         <li><a href="{% url 'profile' %}">پروفایل</a></li>
-                                        <li><a href="#">سفارشات من</a></li>
+                                        <li><a href="{% url 'order_list' %}">سفارشات من</a></li>
                                         <li><a href="{% url 'account_logout' %}">خروج</a></li>
                                     </ul>
                                 </div>
@@ -175,7 +178,7 @@
                                 </ul>
                             </li>
                             <li><a href="./blog.html">بلاگ</a></li>
-                            <li><a href="./contact.html">تماس با ما</a></li>
+                            <li><a href="{% url 'product:contact' %}">تماس با ما</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -183,7 +186,14 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="{% url 'cart:cart_details' %}"><i class="fa fa-shopping-bag"></i> <span>
+                                {% with total_items=cart|length %}
+                                    {% if total_items > 0 %}
+                                        {{ total_items }} 
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                {% endwith %}</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -794,6 +804,8 @@
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
+    
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
     <script src="{% static 'products/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'products/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'products/js/jquery.nice-select.min.js' %}"></script>
