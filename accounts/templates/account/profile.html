@@ -1,4 +1,5 @@
 {% extends "products/index.html" %}
+{% load static %}
 
 {% block title %}
    پروفایل
@@ -6,6 +7,23 @@
 
 
 {% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'products/img/breadcrumb.jpg' %}">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12 text-center">
+                  <div class="breadcrumb__text">
+                      <h2>پروفایل</h2>
+                      <div class="breadcrumb__option">
+                          <a href="{% url 'product:home' %}">خانه</a>
+                          <span>پروفایل</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!-- Breadcrumb Section End -->
     <div class="container">
         <div class="row">
             <table class="table">
@@ -13,27 +31,47 @@
                   <tr>
                     <td><strong>نام</strong></td>
                     <td></td>
-                    <td>{{ user.first_name }}</td>
+                    {% if user.first_name %}
+                      <td>{{ user.first_name }}</td>
+                    {% else %}  
+                    <td>وارد نشده است(لطفا آن را به پروفایل خود اضافه نمایید.)</td>
+                    {% endif %}
                   </tr>
                   <tr>
                     <td><strong>نام خوادگی</strong></td>
                     <td></td>
-                    <td>{{ user.last_name }}</td>
+                    {% if user.last_name %}
+                      <td>{{ user.last_name }}</td>
+                    {% else %}  
+                    <td>وارد نشده است(لطفا آن را به پروفایل خود اضافه نمایید.)</td>
+                    {% endif %}
                   </tr>
                   <tr>
                     <td><strong>نام کاربری</strong></td>
                     <td></td>
-                    <td>{{ user.username }}</td>
+                    {% if user.username %}
+                      <td>{{ user.username }}</td>
+                    {% else %}  
+                    <td>وارد نشده است(لطفا آن را به پروفایل خود اضافه نمایید.)</td>
+                    {% endif %}
                   </tr>
                   <tr>
                     <td><strong>ایمیل</strong></td>
                     <td></td>
-                    <td>{{ user.email }}</td>
+                    {% if user.email %}
+                      <td>{{ user.email }}</td>
+                    {% else %}  
+                    <td>وارد نشده است(لطفا آن را به پروفایل خود اضافه نمایید.)</td>
+                    {% endif %}
                   </tr>
                   <tr>
                     <td><strong>تلفن</strong></td>
                     <td></td>
-                    <td>{{ user.phone }}</td>
+                    {% if user.phone %}
+                      <td>{{ user.phone }}</td>
+                    {% else %}  
+                      <td>وارد نشده است(لطفا آن را به پروفایل خود اضافه نمایید.)</td>
+                    {% endif %}
                   </tr>
                 </tbody>
               </table>

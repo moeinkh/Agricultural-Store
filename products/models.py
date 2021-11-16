@@ -5,6 +5,9 @@ from django.urls import reverse
 from accounts.models import User
 from mptt.models import MPTTModel, TreeForeignKey
 from ckeditor.fields import RichTextField
+from decimal import Decimal
+from extensions.utils import jalali_converter
+
 
 # Create your models here.
 class Category(MPTTModel):
@@ -46,6 +49,9 @@ class Brand(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('product:product_list_brand', args=[self.slug])
+
 
 class IpAddress(models.Model):
 
@@ -86,6 +92,10 @@ class Product(models.Model):
 
     hits = models.ManyToManyField(IpAddress, blank=True, related_name='hits', verbose_name='بازدید ها')
 
+    discount = models.IntegerField('درصد تخفیف', null=True, blank=True)
+    befor_discount = models.PositiveIntegerField('قمیت قبل از تخفیف', null=True, blank=True)
+    discount_status = models.BooleanField('وضعیت تخفیف', default=False)
+
     created_at = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
     updated_at = models.DateTimeField('تاریخ بروز رسانی', auto_now=True)
 
@@ -96,6 +106,9 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if self.count == 0:
             self.available = False
+        elif self.count > 0:
+            self.available = True    
+   
         super().save(*args, **kwargs)      
 
     def image_tag(self):
@@ -105,6 +118,15 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('product:product_detail', args=[str(self.id), self.slug]) 
+
+        
+    def jcreated_at(self):
+        return jalali_converter(self.created_at)
+    jcreated_at.short_description = 'تاریخ ثبت'  
+
+    def jupdated_at(self):
+        return jalali_converter(self.updated_at)
+    jupdated_at.short_description = 'تاریخ به روز شدن'      
 
 class Images(models.Model):
     class Meta:
@@ -134,6 +156,15 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.user.username} برای {self.product.name}'
 
+        
+    def jcreated_at(self):
+        return jalali_converter(self.created_at)
+    jcreated_at.short_description = 'تاریخ ثبت'  
+
+    def jupdated_at(self):
+        return jalali_converter(self.updated_at)
+    jupdated_at.short_description = 'تاریخ به روز شدن'  
+
 class ProductHit(models.Model):
     class Meta:
         verbose_name = 'بازدید کننده های محصول'
@@ -142,3 +173,52 @@ class ProductHit(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='محصول')
     ip_address = models.ForeignKey('IpAddress', on_delete=models.CASCADE, verbose_name='آدرس آی پی')
     created_at = models.DateTimeField('تاریخ بازدید', auto_now_add=True)    
+
+class Contact(models.Model):
+    class Meta:
+        verbose_name = 'پیام مخاطب'
+        verbose_name_plural = 'پیام های مخاطبان'
+        ordering = ['-created_at']
+
+    name = models.CharField('نام', max_length=128)
+    email = models.EmailField('ایمیل')
+    text = models.TextField('متن پیام')
+
+    created_at = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
+    updated_at = models.DateTimeField('تاریخ بروز رسانی', auto_now=True)
+
+    def __str__(self):
+        return self.name 
+
+    
+    def jcreated_at(self):
+        return jalali_converter(self.created_at)
+    jcreated_at.short_description = 'تاریخ ثبت'  
+
+    def jupdated_at(self):
+        return jalali_converter(self.updated_at)
+    jupdated_at.short_description = 'تاریخ به روز شدن'       
+
+class Banner(models.Model):
+    class Meta:
+        verbose_name = 'بنر'
+        verbose_name_plural = 'بنر ها'
+        ordering = ['-created_at']
+    
+    banner = models.ImageField('بنر', upload_to='product/banners')
+    alt = models.CharField('متن تصویر', max_length=64)
+
+    created_at = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
+    updated_at = models.DateTimeField('تاریخ بروز رسانی', auto_now=True)
+
+        
+    def jcreated_at(self):
+        return jalali_converter(self.created_at)
+    jcreated_at.short_description = 'تاریخ ثبت'  
+
+    def jupdated_at(self):
+        return jalali_converter(self.updated_at)
+    jupdated_at.short_description = 'تاریخ به روز شدن'  
+
+    def __str__(self):
+        return self.alt

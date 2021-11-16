@@ -1,0 +1,11 @@
+{% for visit in product_visited %}
+    <a href="{{ visit.get_absolute_url }}" class="latest-product__item">
+        <div class="latest-product__item__pic">
+            <img src="{{ visit.image.url }}" alt="{{ visit.name }}">
+        </div>
+        <div class="latest-product__item__text">
+            <h6>{{ visit.name }}</h6>
+            <span style="direction: rtl;">{{ visit.price }} تومان</span>
+        </div>
+    </a>
+{% endfor %}

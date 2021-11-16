@@ -1,4 +1,5 @@
 from django.db import models
+from extensions.utils import jalali_converter
 
 # Create your models here.
 class Coupon(models.Model):
@@ -13,4 +14,12 @@ class Coupon(models.Model):
     active = models.BooleanField('فعال؟')
 
     def __str__(self):
-        return self.code    
+        return self.code  
+
+    def jvalid_from(self):
+        return jalali_converter(self.valid_from)
+    jvalid_from.short_description = 'از تاریخ'  
+
+    def jvalid_to(self):
+        return jalali_converter(self.valid_to)
+    jvalid_to.short_description = 'تا تاریخ'       

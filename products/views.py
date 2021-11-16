@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Category, Product, Brand, Images, Comment, IpAddress
-from .forms import CommentForm
+from .models import Category, Product, Brand, Images, Comment, IpAddress, Banner
+from .forms import CommentForm, ContactForm
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from cart.forms import CartAddProductForm
@@ -12,30 +12,38 @@ from django.core.paginator import Paginator
 def home(request):
     categories = Category.objects.all()
     product = Product.objects.filter(available=True)
-    product_visited = Product.objects.filter(available=True).annotate(
-        num_hits=Count('hits')).order_by('-num_hits')[:3]
+    banner = Banner.objects.first()
 
     return render(request, 'products/home.html', {
         'product': product,
         'categories': categories,
-        'last_product': Product.objects.all()[:3],
-        'product_visited': product_visited,
+        'banner': banner,
     })    
 
-def product_list(request, category_slug=None):
+def product_list(request, category_slug=None, brand_slug=None):
     category = None
     categories = Category.objects.all()
+    brand = None
+    brands = Brand.objects.all()
     product = Product.objects.filter(available=True)
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         product = product.filter(category=category)
+    elif brand_slug:
+        brand = get_object_or_404(Brand, slug=brand_slug) 
+        product = product.filter(brand=brand)   
 
+    # start search input
     search_name = request.GET.get('search')
     if search_name:
-        product = Product.objects.filter(Q(name__icontains=search_name)
-                                        | Q(category__name__in=request.GET.getlist('search')))    
+        product = Product.objects.filter( Q(name__icontains=search_name)
+                                        | Q(category__name__in=request.GET.getlist('search'))   
+                                        | Q(brand__name__in=request.GET.getlist('search')))    
+    # end search input
 
+
+    # start pagination config
     paginator = Paginator(product, 15)
     page_number = request.GET.get('page')
     try:
@@ -46,13 +54,13 @@ def product_list(request, category_slug=None):
     except EmptyPage:
         # if page is empty then return last page
         page_obj = paginator.page(p.num_pages)
-    
+    # end pagination config
+
     return render(request, 'products/shop-grid.html', {
-        'product': product,
         'categories': categories,
         'category': category,
-        'last_product': Product.objects.all()[:3],
         'page_obj': page_obj,
+        'brands': brands,
     })  
 
 def product_detail(request, id, slug):
@@ -89,5 +97,16 @@ def add_comment(request, id):
     return HttpResponseRedirect(url)
 
 def contact(request):
-
-    return render(request, 'products/contact.html')    
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'پیام شما با موفقیت ارسال شد')
+            return HttpResponseRedirect(url)
+    else:
+        form = ContactForm()        
+                    
+    return render(request, 'products/contact.html', {
+        'form': form,
+    })    

@@ -1,6 +1,8 @@
 {% extends "products/index.html" %}
 {% load static %}
 
+{% load base_tags %}
+
 {% block title %}
   فروشگاه محصولات کشاورزی
 {% endblock title %}
@@ -17,16 +19,23 @@
                             <i class="fa fa-bars"></i>
                             <span>دسته بندی ها</span>
                         </div>
-                            {% load mptt_tags %}
-                            <ul class="header__menu__dropdown"> 
-                            {% recursetree categories %}
-                                <p><a href="{{ node.get_absolute_url }}">{{ node.name }}</a></p>  
-                                {% if not node.is_leaf_node %}
-                                    <span class="arrow_carrot-down"></span>
-                                    <li><a href="">{{ children }}</a></li>
-                                {% endif %}    
-                            {% endrecursetree %}
-                            </ul>
+                        <ul class="header__menu__dropdown"> 
+                            <li>
+                                {% for cate in categories %}
+                                    {% if cate.parent == None %}
+                                    <button class="dropdown-btn">
+                                        {{ cate.name }}
+                                        <i class="fa fa-caret-down"></i>
+                                    </button>
+                                    <div class="dropdown-container">
+                                        {% for child in cate.children.all %}
+                                            <a href="{{ child.get_absolute_url }}">{{ child.name }}</a>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </li>
+                        </ul>  
                     </div>
                 </div>
                 <div class="col-lg-9">
@@ -34,10 +43,10 @@
                         <div class="hero__search__form">
                             <form action="{% url 'product:product_list' %}" method='get'>
                                 <div class="hero__search__categories">
-                                    همه دسته بندی ها
+                                    همه محصولات
                                     <span class="arrow_carrot-down"></span>
                                 </div>
-                                <input type="text" name="search_name" placeholder="چه چیزی نیاز دارید؟">
+                                <input type="text" name="search" placeholder="چه چیزی نیاز دارید؟">
                                 <button type="submit" class="site-btn">جستجو</button>
                             </form>
                         </div>
@@ -46,17 +55,23 @@
                                 <i class="fa fa-phone"></i>
                             </div>
                             <div class="hero__search__phone__text">
-                                <h5>+65 11.188.888</h5>
+                                <h5>09184563242</h5>
                                 <span>پشتیبانی 24 ساعته</span>
                             </div>
                         </div>
                     </div>
-                    <div class="hero__item set-bg" data-setbg="{% static 'products/img/hero/banner.jpg' %}">
+                    <div class="hero__item set-bg" data-setbg="
+                    {% if banner.banner.url %}
+                        {{ banner.banner.url }}
+                    {% else %}
+                        {% static 'products/img/hero/banner.jpg' %}
+                    {% endif %}
+                    ">
                         <div class="hero__text">
                             <span>کشاورزی خوب</span>
                             <h2>محصولات <br />100% طبیعی</h2>
                             <p>با خرید مطمئن برداشت محصول را بیمه کنید</p>
-                            <a href="#" class="primary-btn">همین الان بخر</a>
+                            <a href="{% url 'product:product_list' %}" class="primary-btn">همین الان بخر</a>
                         </div>
                     </div>
                 </div>
@@ -74,21 +89,41 @@
             <div class="row">
                 <div class="categories__slider owl-carousel">
                     {% for pro in product %}
-                    <div class="col-lg-3">
-                        <div class="featured__item">
-                            <div class="featured__item__pic set-bg" data-setbg="{{ pro.image.url }}">
-                                <ul class="featured__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
+                        {% if pro.discount_status %}
+                            <div class="col-lg-3">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                        data-setbg="{{ pro.image.url }}">
+                                        <div class="product__discount__percent">-{{ pro.discount }}</div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <a href="{{ pro.get_absolute_url }}"><h6>{{ pro.name }}</h6></a>
+                                        <div class="product__item__price mt-1" style="direction: rtl;">{{ pro.price }} تومان<span class="px-1"> {{ pro.befor_discount }}تومان</span></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="featured__item__text">
-                                <h6><a href="{{ pro.get_absolute_url }}">{{ pro.name }}</a></h6>
-                                <h5>{{ pro.price }} تومان</h5>
+                        {% else %}
+                            <div class="col-lg-3">
+                                <div class="featured__item">
+                                    <div class="featured__item__pic set-bg" data-setbg="{{ pro.image.url }}">
+                                        <ul class="featured__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="featured__item__text">
+                                        <h6><a href="{{ pro.get_absolute_url }}">{{ pro.name }}</a></h6>
+                                        <h5 style="direction: rtl;">{{ pro.price }} تومان</h5>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -108,7 +143,9 @@
                         <ul>
                             <li class="active" data-filter="*">همه</li>
                             {% for cate in categories %}
-                                <li data-filter=".{{ cate.slug }}">{{ cate.name }}</li>
+                                {% for child in cate.children.all %}
+                                    <li data-filter=".{{ child.slug }}">{{ child.name }}</li>
+                                {% endfor %}
                             {% endfor %}
                         </ul>
                     </div>
@@ -165,30 +202,10 @@
                         <h4>آخرین محصولات</h4>
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
-                                {% for last in last_product %}
-                                    <a href="{{ last.get_absolute_url }}" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="{{ last.image.url }}" alt="{{ last.name }}">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>{{ last.name }}</h6>
-                                            <span>{{ last.price }} تومان</span>
-                                        </div>
-                                    </a>
-                                {% endfor %}
+                                {% last_product %}
                             </div>
                             <div class="latest-prdouct__slider__item">
-                                {% for last in last_product %}
-                                    <a href="{{ last.get_absolute_url }}" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="{{ last.image.url }}" alt="{{ last.name }}">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>{{ last.name }}</h6>
-                                            <span>{{ last.price }}تومان</span>
-                                        </div>
-                                    </a>
-                                {% endfor %}
+                                {% last_product %}
                             </div>
                         </div>
                     </div>
@@ -263,30 +280,10 @@
                         <h4>محصولات پربازدید</h4>
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
-                                {% for visit in product_visited %}
-                                    <a href="{{ visit.get_absolute_url }}" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="{{ visit.image.url }}" alt="{{ visit.name }}">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>{{ visit.name }}</h6>
-                                            <span>{{ visit.price }} تومان</span>
-                                        </div>
-                                    </a>
-                                {% endfor %}
+                                {% product_visited %}
                             </div>
                             <div class="latest-prdouct__slider__item">
-                                {% for visit in product_visited %}
-                                    <a href="{{ visit.get_absolute_url }}" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="{{ visit.image.url }}" alt="{{ visit.name }}">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>{{ visit.name }}</h6>
-                                            <span>{{ visit.price }} تومان</span>
-                                        </div>
-                                    </a>
-                                {% endfor %}
+                                {% product_visited %}
                             </div>
                         </div>
                     </div>

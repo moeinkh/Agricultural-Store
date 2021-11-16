@@ -66,13 +66,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="primary-btn">افزودن به سبد</button>
-                                <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                                {% if product.available %}
+                                    <button type="submit" class="primary-btn">افزودن به سبد</button>
+                                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                                {% else %}
+                                    <button type="submit" class="btn btn-danger flat" disabled>ناموجود</button>
+                                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>    
+                                {% endif %}
                             </form>
                             <ul>
                                 <li><b>وضعیت:</b> <span>{% if product.available %}موجود {%else%} ناموجود {% endif %}</span></li>
                                 <li><b>کشور:</b> <span>{{ product.country }}</span></li>
-                                <li><b>وزن:</b> <span>{{ product.weight }}کیلو گرم</span></li>
+                                {% if product.weight %}
+                                    <li><b>وزن:</b> <span>{{ product.weight }}کیلو گرم</span></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -157,7 +164,7 @@
                                                             {% for com in comments %}
                                                                 <div class="border mt-2 p-2 rounded">
                                                                    <p style="font-size: 12px;"> نظر {{ forloop.counter }} توسط {{ com.user.username }} در
-                                                                    {{ com.created_at }}</p>
+                                                                    {{ com.jcreated_at }}</p>
                                                                     <p>{{ com.comment|linebreaks }}</p>
                                                                 </div>
                                                             {% endfor %}

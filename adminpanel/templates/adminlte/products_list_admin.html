@@ -1,0 +1,125 @@
+{% extends "adminlte/index_panel.html" %}
+
+{% block title %}
+پنل مدیریت | لیست محصولات
+{% endblock title %}
+
+
+{% block content %}
+<!-- /.row -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                <h3 class="card-title">جدول محصولات</h3>
+
+                <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover" style="font-size: 13px;">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>نام</th>
+                        <th>دسته بندی</th>
+                        <th>برند</th>
+                        <th>کشور</th>
+                        <th>حجم</th>
+                        <th>تعداد</th>
+                        <th>قیمت</th>
+                        <th>درصد تخفیف</th>
+                        <th>قیمت قبل از تخفیف</th>
+                        <th>وضعیت تخفیف</th>
+                        <th>وزن</th>
+                        <th>موجود</th>
+                        <th>عکس</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if products %}
+                        {% for item in products %}
+                        <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td><a href="">{{ item.name }}</a></td>
+                          <td>{{ item.category }}</td>
+                          <td>
+                            {{ item.brand }}
+                          </td>
+                          <td>
+                            {{ item.country }}
+                          </td>
+                          <td>
+                            {% if item.volume %}
+                                {{ item.volume }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                          </td>
+                          <td>
+                            {{ item.count }}
+                          </td>
+                          <td>
+                            {{ item.price }}
+                          </td>
+                          <td>
+                            {% if item.discount %}
+                                {{ item.discount }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                          </td>
+                          <td>
+                            {% if item.befor_discount %}
+                                {{ item.befor_discount }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                          </td>
+                          <td>
+                            {% if item.discount_status %}
+                            <i class="fas fa-check-circle" style="color: #11bb11;"></i>
+                            {% else %}
+                            <i class="fa fa-times-circle" style="color: #d60e0e;"></i>
+                            {% endif %}
+                          </td>
+                          <td>
+                            {% if item.weight %}
+                                {{ item.weight }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                          </td>
+                          <td>
+                                {% if item.available %}
+                                <i class="fas fa-check-circle" style="color: #11bb11;"></i>
+                                {% else %}
+                                <i class="fa fa-times-circle" style="color: #d60e0e;"></i>
+                                {% endif %}
+                          </td>
+                          <td>
+                            <img style="height: 50px; width: 50px;" src="{{ item.image.url }}" alt="{{ item.name }}">
+                          </td>
+                        </tr>
+                      {% endfor %}
+                        {% else %}
+                            <td colspan="8"><p>سفارشی ندارین :)</p></td>
+                        {% endif %}
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

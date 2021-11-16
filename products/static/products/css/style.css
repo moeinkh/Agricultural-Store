@@ -96,11 +96,15 @@ textarea:focus {
 	outline: none;
 }
 
+a {
+	color: #7fad39;
+}
+
 a:hover,
 a:focus {
 	text-decoration: none;
 	outline: none;
-	color: #ffffff;
+	color: #fff;
 }
 
 ul,
@@ -332,6 +336,10 @@ ol {
 	cursor: pointer;
 }
 
+.header__top__right__language div i {
+	padding: 0 5px;
+}
+
 .header__top__right__language:hover ul {
 	top: 23px;
 	opacity: 1;
@@ -497,7 +505,7 @@ ol {
 }
 
 .header__cart {
-	text-align: right;
+	text-align: left;
 	padding: 24px 0;
 }
 
@@ -597,6 +605,8 @@ ol {
 	margin-bottom: 0;
 }
 
+
+
 .hero__categories__all {
 	background: #7fad39;
 	position: relative;
@@ -625,6 +635,39 @@ ol {
 	font-size: 18px;
 	color: #ffffff;
 }
+
+ /* Style the sidenav links and the dropdown button */
+  .sidenav a, .dropdown-btn {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #7fad39;
+	display: block;
+	border: none;
+	background: none;
+	width:100%;
+	text-align: right;
+	cursor: pointer;
+	outline: none;
+  }
+  
+  /* On mouse-over */
+  .sidenav a:hover, .dropdown-btn:hover {
+	color: #7fad39;
+  }
+  
+  /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+  .dropdown-container {
+	display: none;
+	background-color: #fff;
+	padding-left: 8px;
+  }
+  
+  /* Optional: Style the caret down icon */
+  .fa-caret-down {
+	float: left;
+	padding-right: 8px;
+  }
 
 .hero__categories ul {
 	border: 1px solid #ebebeb;
@@ -719,7 +762,7 @@ ol {
 	text-align: center;
 	border-radius: 50%;
 	float: right;
-	margin-right: 20px;
+	margin-left: 20px;
 }
 
 .hero__search__phone__text {
@@ -972,7 +1015,7 @@ ol {
 }
 
 .featured__item__text h6 a {
-	color: #252525;
+	color: #7fad39;
 }
 
 .featured__item__text h5 {
@@ -1128,6 +1171,8 @@ ol {
 	margin-bottom: 35px;
 }
 
+
+
 .sidebar__item.sidebar__item__color--option {
 	overflow: hidden;
 }
@@ -1189,7 +1234,7 @@ ol {
 }
 
 .price-range-wrap .price-range {
-	border-radius: 0;
+	/* border-radius: 0; */
 }
 
 .price-range-wrap .price-range.ui-widget-content {
@@ -1308,7 +1353,7 @@ ol {
 }
 
 .product__discount__title {
-	text-align: left;
+	text-align: right;
 	margin-bottom: 65px;
 }
 
@@ -1465,7 +1510,7 @@ ol {
 	margin-right: 0;
 }
 
-.filter__item {
+.product__item {
 	padding-top: 45px;
 	border-top: 1px solid #ebebeb;
 	padding-bottom: 20px;
@@ -1656,7 +1701,7 @@ ol {
 }
 
 .product__item__text h6 a {
-	color: #252525;
+	color: #7fad39;
 }
 
 .product__item__text h5 {
@@ -1739,9 +1784,10 @@ ol {
 	margin-bottom: 12px;
 }
 
-.product__details__text .product__details__rating i {
-	margin-right: -2px;
-	color: #EDBB0E;
+.product__details__text .product__details__rating ul {
+	border-top: 0;
+	margin-top: 0;
+	padding-top: 10px;
 }
 
 .product__details__text .product__details__rating span {
@@ -1779,6 +1825,7 @@ ol {
 	padding-top: 40px;
 	margin-top: 50px;
 }
+
 
 .product__details__text ul li {
 	font-size: 16px;
@@ -2803,6 +2850,28 @@ ol {
 	float: right;
 }
 
+/* --------------------
+  Ticket Details
+-----------------------*/
+.header_card_ticket {
+	height: 45px;
+	position: relative;
+}
+
+.header_card_ticket p {
+	font-size: 12px;
+}
+
+.name {
+	font-size: 18px !important;
+}
+
+.created_at {
+	position: absolute;
+    left: 20px;
+    top: 16px;
+}
+
 /*---------------------
   Contact
 -----------------------*/
@@ -3444,7 +3513,7 @@ ol {
 	}
 	.humberger__menu__wrapper .slicknav_nav .slicknav_row,
 	.humberger__menu__wrapper .slicknav_nav a {
-		padding: 8px 0;
+		padding: 0 0;
 	}
 	.humberger__menu__overlay {
 		position: fixed;
@@ -3526,5 +3595,20 @@ ol {
 	}
 	.blog__details__hero__text h2 {
 		font-size: 24px;
+	}
+
+	.name {
+		margin-right: -12px;
+		font-size: 15px !important;
+	}
+	
+	.created_at {
+		position: absolute;
+		left: 12px;
+		top: 16px;
+	}
+
+	.text_ticket{
+		font-size: 14px;
 	}
 }

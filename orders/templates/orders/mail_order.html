@@ -1,0 +1,13 @@
+<div class="col-lg-4 col-md-6">
+    <div class="checkout__order">
+        <h4>Your Order</h4>
+        <div class="checkout__order__products">کل محصولات</div>
+        <ul>
+            {% for item in cart %}
+                <li>{{ item.product.name }} {{ item.quantity }}x<span>{{ item.total_price }} تومان</span></li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <div class="checkout__order__total">کل <span>{{ cart.get_total_price_after_discount|floatformat:0 }} تومان</span></div>
+    </div>
+</div>

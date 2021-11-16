@@ -4,6 +4,8 @@ from accounts.models import User
 from products.models import Product
 from coupons.models import Coupon
 from django.core.validators import MinValueValidator, MaxValueValidator
+from extensions.utils import jalali_converter
+
 
 # Create your models here.
 class Order(models.Model):
@@ -17,6 +19,16 @@ class Order(models.Model):
     phone_number = models.CharField('شماره تلفن', max_length=11)
     paid = models.BooleanField('پرداخت شد', default=False)
     order_code = models.CharField('کد سفارش', max_length=8)
+    
+    PENDING = 1
+    SENDED = 2
+    CANCELED = 3
+    STATUS_CHOICES = (
+        (PENDING, 'در حال بررسی'),
+        (SENDED, 'ارسال شد'),
+        (CANCELED, 'کنسل شد'),
+    )
+    status = models.IntegerField('وضعیت', choices=STATUS_CHOICES, default=1)
 
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, related_name='orders', null=True, blank=True, verbose_name='کد تخفیف')
     discount = models.IntegerField('تخفیف', default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
@@ -38,7 +50,17 @@ class Order(models.Model):
         total_cost = sum(item.get_cost() for item in self.items.all())
         return total_cost - total_cost * (self.discount / Decimal(100)) 
 
-    get_total_cost.short_description = 'مبلغ کل'      
+    get_total_cost.short_description = 'مبلغ کل'
+
+    def jcreated_at(self):
+        return jalali_converter(self.created_at)
+    jcreated_at.short_description = 'تاریخ سفارش'  
+
+    def jupdated_at(self):
+        return jalali_converter(self.updated_at)
+    jupdated_at.short_description = 'تاریخ به روز کردن سفارش' 
+
+
 
 
 class OrderItem(models.Model):
@@ -50,11 +72,10 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items', verbose_name='محصول')
     price = models.PositiveIntegerField('قیمت')
     quantity = models.PositiveIntegerField('تعداد', default=1)
+    total_price = models.PositiveIntegerField('قیمت کامل')
 
     def __str__(self):
         return self.product.name
 
     def get_cost(self):
-        return self.quantity * self.price     
-
-    get_cost.short_description = 'مبلغ' 
+        return self.quantity * self.price  

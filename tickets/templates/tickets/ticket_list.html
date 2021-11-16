@@ -1,0 +1,86 @@
+{% extends "products/index.html" %}
+{% load static %}
+
+{% block title %}
+  لیست تیکت ها
+{% endblock title %}
+
+{% block content %}
+      <!-- Breadcrumb Section Begin -->
+      <section class="breadcrumb-section set-bg" data-setbg="{% static 'products/img/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>لیست تیکت ها</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'product:home' %}">خانه</a>
+                            <span>لیست تیکت ها</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shoping Cart Section Begin -->
+    <section class="shoping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">نام</th>
+                                    <th>نام خانوادگی</th>
+                                    <th>موضوع</th>
+                                    <th>وضعیت</th>
+                                    <th>تاریخ</th>
+                                    <th> تاریخ  بروز شده</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in tickets %}
+                                    <tr style="font-size: 15px;">
+                                        <td>
+                                            {{ item.user.first_name }}
+                                        </td>
+                                        <td>
+                                            {{ item.user.last_name }}
+                                        </td>
+                                        <td>
+                                            {{ item.get_subject_display }}
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if item.status == 1 %}
+                                                badge-info
+                                            {% elif item.status == 2 %}
+                                                badge-warning
+                                            {% elif item.status == 3 %}
+                                                badge-success
+                                            {% elif item.status == 4 %}
+                                                badge-danger
+                                            {% endif %}">{{ item.get_status_display }}</span>
+                                        </td>
+                                        <td>
+                                            {{ item.jcreated_at }}
+                                        </td>
+                                        <td>
+                                            {{ item.jupdated_at }}
+                                        </td>
+                                        <td>
+                                            <a style="color: #fff;" href="{{ item.get_absolute_url }}" class="badge bg-primary">جزئیات</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shoping Cart Section End -->
+{% endblock content %}

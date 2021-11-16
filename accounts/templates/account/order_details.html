@@ -1,17 +1,36 @@
 {% extends "products/index.html" %}
+{% load static %}
+
 
 {% block title %}
   سفارش {{ order.id }}
 {% endblock %}
 
 {% block content %}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'products/img/breadcrumb.jpg' %}">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12 text-center">
+              <div class="breadcrumb__text">
+                  <h2>جزئیات سفارش</h2>
+                  <div class="breadcrumb__option">
+                      <a href="{% url 'product:home' %}">خانه</a>
+                      <a href="{% url 'order_list' %}">لیست سفارشات</a>
+                      <span>جزئیات سفارش</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
     <div class="container">
         <div class="row">
             <div class="col-lg-12 table-responsive">
                 <table class="table">
                     <tr>
                         <th>تاریخ سفارش</th>
-                        <td>{{ order.created_at }}</td>
+                        <td>{{ order.jcreated_at }}</td>
                     </tr>
                     <tr>
                         <th>کاربر</th>
@@ -43,7 +62,7 @@
                     </tr>
                     <tr>
                         <th>کد سفارش</th>
-                        <td><span class="badge badge-info">{{ order.order_code }}</span></td>
+                        <td><b>{{ order.order_code }}</b></td>
                     </tr>
                 </table>
             </div>
@@ -61,10 +80,10 @@
                     <tbody>
                         {% for item in order.items.all %}
                             <tr class="row{% cycle '1' '2' %}">
-                            <td>{{ item.product.name }}</td>
-                            <td class="num">{{ item.price }} تومان</td>
-                            <td class="num">{{ item.quantity }}</td>
-                            <td class="num">{{ item.get_cost }} تومان</td>
+                                <td><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
+                                <td class="num">{{ item.price }} تومان</td>
+                                <td class="num">{{ item.quantity }}</td>
+                                <td class="num">{{ item.get_cost }} تومان</td>
                             </tr>
                         {% endfor %}
                         <tr class="total">

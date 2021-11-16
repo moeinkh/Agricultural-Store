@@ -1,0 +1,76 @@
+{% extends "adminlte/index_panel.html" %}
+
+
+{% block title %}
+پنل مدیریت | لیست سفارشات
+{% endblock title %}
+
+
+
+{% block content %}
+<!-- /.row -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                <h3 class="card-title">جدول کل سفارشات</h3>
+
+                <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover" style="font-size: 13px;">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>تاریخ</th>
+                        <th>مبلغ</th>
+                        <th>وضعیت</th>
+                        <th>کد پستی</th>
+                        <th>شهر</th>
+                        <th>آدرس</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if orders %}
+                          {% for order in orders %}
+                              <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ order.first_name }}</td>
+                                <td>{{ order.last_name }}</td>
+                                <td>{{ order.jcreated_at }}</td>
+                                <td>{{ order.get_total_cost }} تومان</td>
+                                <td><span class="badge {% if order.status == 1 %}
+                                          badge-info
+                                          {% elif order.status == 2 %}
+                                              badge-success
+                                          {% elif order.status == 3 %}
+                                              badge-danger
+                                          {% endif %}">{{ order.get_status_display }}</span></td>
+                                <td><span class="tag tag-warning">{{ order.postal_code }}</span></td>
+                                <td>{{ order.city}}</td>
+                                <td>{{ order.address}}</td>
+                              </tr>
+                          {% endfor %}
+                        {% else %}
+                            <td colspan="8"><p>سفارشی ندارین :)</p></td>
+                        {% endif %}
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+{% endblock content %}

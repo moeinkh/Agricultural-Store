@@ -10,6 +10,10 @@ from django.contrib import messages
 from django.utils.crypto import get_random_string
 from products.models import Product
 
+from django.template.loader import render_to_string, get_template
+from django.core.mail import EmailMessage
+from smtplib import SMTPAuthenticationError
+from django.core.mail import send_mail
 # Create your views here.
 @login_required
 def order_create(request):
@@ -17,7 +21,6 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            order = form.save(commit=False)
             order = form.save(commit=False)
             if cart.coupon:
                 order.coupon = cart.coupon
@@ -31,7 +34,8 @@ def order_create(request):
                     order=order,
                     product=item['product'],
                     price=item['price'],
-                    quantity=item['quantity']
+                    quantity=item['quantity'],
+                    total_price=item['total_price']
                 )
                 
                 product = Product.objects.get(name=item['product'])
@@ -42,8 +46,11 @@ def order_create(request):
             # clear the coupon code
             request.session['coupon_id'] = None
             # set order in session
-            request.session['order_id'] = order.id
-            messages.success(request, 'سفارش با موفقیت ثبت شد.')
+            request.session['order_id'] = order.id   
+            # تنظیمات ارسال فاکتور خرید با ایمیل
+            subject = 'ثبت سفارش'
+            message = f'با سلام و خسته نباشید {request.user.username}'
+            send_mail(subject, message, 'coolgertn@gmail.com', [request.user.email], fail_silently=False)
             return redirect(reverse('product:home'))
     else:
         form = OrderForm()

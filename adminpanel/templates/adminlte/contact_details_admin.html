@@ -1,0 +1,31 @@
+{% extends "adminlte/index_panel.html" %}
+
+{% block title %}
+پنل مدیریت |  پیام  {{contact.name}}
+{% endblock title %}
+
+{% block content %}
+<div class="col-12">
+    <table class="table">
+          <tr>
+            <th scope="col">نام و نام خانوادگی</th>
+            <td>{{contact.name}}</td>
+          </tr>
+          <tr>
+            <td>ایمیل</td>
+            <td>{{contact.email}}</td>
+          </tr>
+          <tr>
+            <td>تاریخ ارسال</td>
+            <td>{{contact.jcreated_at}}</td>
+          </tr>
+          <tr>
+            <td>پیام مخاطب</td>
+            <td>{{contact.text}}</td>
+          </tr>
+      </table>
+</div>
+
+</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,78 @@
+{% extends "adminlte/index_panel.html" %}
+
+{% block title %}
+پنل مدیریت | لیست تیکت ها
+{% endblock title %}
+
+
+{% block content %}
+<!-- /.row -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                <h3 class="card-title">جدول تیکت ها</h3>
+
+                <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover" style="font-size: 13px;">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>نام و نام خانوادگی</th>
+                        <th>موضوع</th>
+                        <th>وضعیت</th>
+                        <th>تاریخ ایجاد</th>
+                        <th>تاریخ بروز رسانی</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if tickets %}
+                        {% for item in tickets %}
+                        <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td><a href="{% url 'admin_panel:ticket_details_admin' id=item.id %}">{{ item.user.get_full_name }}</a></td>
+                          <td>{{ item.get_subject_display }}</td>
+                          <td>
+                            <span class="badge 
+                            {% if item.status == 1 %}
+                            badge-info
+                            {% elif item.status == 2 %}
+                            badge-warning
+                            {% elif item.status == 3 %}
+                            badge-success
+                            {% elif item.status == 4 %}
+                            badge-danger
+                            {% endif %}">{{ item.get_status_display }}</span>
+                          </td>
+                          <td>
+                            <div class="sparkbar" data-color="#f56954" data-height="20">{{ item.jcreated_at }}</div>
+                          </td>
+                          <td>
+                            <div class="sparkbar" data-color="#f56954" data-height="20">{{ item.jupdated_at }}</div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                        {% else %}
+                            <td colspan="8"><p>سفارشی ندارین :)</p></td>
+                        {% endif %}
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -14,3 +14,5 @@ class UserEditForm(UserChangeForm):
             'last_name': TextInput(attrs={'class': 'input', 'placeholder': 'نام خانوادگی جدید خود را وارد نمایید..'}),
             'phone': TextInput(attrs={'class': 'input', 'placeholder': 'شماره تلفن جدید خود را وارد نمایید..'}),
         }
+
+        

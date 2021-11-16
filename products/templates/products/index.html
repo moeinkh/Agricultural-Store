@@ -38,26 +38,45 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="img/logo.png" alt=""></a>
+            <a href="#"><img src="{% static 'products/img/logo.png' %}" alt=""></a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
-                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="{% url 'cart:cart_details' %}"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="{% url 'cart:cart_details' %}"><i class="fa fa-shopping-bag"></i> <span>
+                    {% with total_items=cart|length %}
+                        {% if total_items > 0 %}
+                            {{ total_items }} 
+                        {% else %}
+                            0
+                        {% endif %}
+                    {% endwith %}</span></a></li>
             </ul>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__auth">
                 {% if request.user.is_authenticated %}
-                    <div class="header__top__right__language">
-                        <div><i class="fa fa-user"></i> {{ request.user.username }}</div>
-                        <span class="arrow_carrot-down"></span>
-                        <ul class="header__menu__dropdown" style="text-align: right;">
-                            <li><a href="{% url 'profile' %}">پروفایل</a></li>
-                            <li><a href="#">سفارشات من</a></li>
-                            <li><a href="{% url 'account_logout' %}">خروج</a></li>
-                        </ul>
-                    </div>
+                    {% if request.user.is_authenticated and request.user.is_staff %}
+                        <div class="header__top__right__language">
+                            <div><i class="fa fa-user"></i> {{ request.user.username }}</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul class="header__menu__dropdown" style="text-align: right;">
+                                <li><a href="{% url 'profile' %}">پروفایل</a></li>
+                                <li><a href="{% url 'order_list' %}">سفارشات من</a></li>
+                                <li><a href="{% url 'admin_panel:management' %}">مدیریت</a></li>
+                                <li><a href="{% url 'account_logout' %}">خروج</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="header__top__right__language">
+                            <div><i class="fa fa-user"></i> {{ request.user.username }}</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul class="header__menu__dropdown" style="text-align: right;">
+                                <li><a href="{% url 'profile' %}">پروفایل</a></li>
+                                <li><a href="{% url 'order_list' %}">سفارشات من</a></li>
+                                <li><a href="{% url 'account_logout' %}">خروج</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 {% else %}  
                     <div class="header__top__right__language">
                         <div><i class="fa fa-user"></i> {{ request.user.username }}</div>
@@ -74,14 +93,16 @@
             <ul>
                 <li class="active"><a href="{% url 'product:home' %}">خانه</a></li>
                 <li><a href="{% url 'product:product_list' %}">فروشگاه</a></li>
-                <li><a href="#">Pages</a>
-                    <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                        <li><a href="./checkout.html">Check Out</a></li>
-                        <li><a href="./blog-details.html">Blog Details</a></li>
-                    </ul>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="#">مشاوره</a>
+                        <ul class="header__menu__dropdown">
+                            <li><a href="{% url 'ticket:add_ticket' %}">ایجاد تیکت</a></li>
+                            <li><a href="{% url 'ticket:ticket_list' %}">لیست تیکت ها</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'ticket:add_ticket' %}">ایجاد تیکت</a></li>
+                {% endif %}
                 <li><a href="./blog.html">بلاگ</a></li>
                 <li><a href="{% url 'product:contact' %}">تماس با ما</a></li>
             </ul>
@@ -95,7 +116,7 @@
         </div>
         <div class="humberger__menu__contact">
             <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                <li><i class="fa fa-envelope"></i> admin@admin.com</li>
             </ul>
         </div>
     </div>
@@ -118,7 +139,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                                <li><i class="fa fa-envelope"></i> admin@admin.com</li>
                             </ul>
                         </div>
                     </div>
@@ -132,15 +153,28 @@
                             </div>
                             <div class="header__top__right__auth">
                                 {% if request.user.is_authenticated %}
-                                <div class="header__top__right__language">
-                                    <div><i class="fa fa-user"></i> {{ request.user.username }}</div>
-                                    <span class="arrow_carrot-down"></span>
-                                    <ul class="header__menu__dropdown" style="text-align: right;">
-                                        <li><a href="{% url 'profile' %}">پروفایل</a></li>
-                                        <li><a href="{% url 'order_list' %}">سفارشات من</a></li>
-                                        <li><a href="{% url 'account_logout' %}">خروج</a></li>
-                                    </ul>
-                                </div>
+                                    {% if request.user.is_authenticated and request.user.is_staff %}
+                                        <div class="header__top__right__language">
+                                            <div><i class="fa fa-user"></i> {{ request.user.username }}</div>
+                                            <span class="arrow_carrot-down"></span>
+                                            <ul class="header__menu__dropdown" style="text-align: right;">
+                                                <li><a href="{% url 'profile' %}">پروفایل</a></li>
+                                                <li><a href="{% url 'order_list' %}">سفارشات من</a></li>
+                                                <li><a href="{% url 'admin_panel:management' %}">مدیریت</a></li>
+                                                <li><a href="{% url 'account_logout' %}">خروج</a></li>
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        <div class="header__top__right__language">
+                                            <div><i class="fa fa-user"></i> {{ request.user.username }}</div>
+                                            <span class="arrow_carrot-down"></span>
+                                            <ul class="header__menu__dropdown" style="text-align: right;">
+                                                <li><a href="{% url 'profile' %}">پروفایل</a></li>
+                                                <li><a href="{% url 'order_list' %}">سفارشات من</a></li>
+                                                <li><a href="{% url 'account_logout' %}">خروج</a></li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
                                 {% else %}  
                                     <div class="header__top__right__language">
                                         <div><i class="fa fa-user"></i>ورود یا ثبت نام</div>
@@ -169,14 +203,16 @@
                         <ul>
                             <li class="active"><a href="{% url 'product:home' %}">خانه</a></li>
                             <li><a href="{% url 'product:product_list' %}">فروشگاه</a></li>
-                            <li><a href="#">محصولات</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">کشاورزی</a></li>
-                                    <li><a href="./shoping-cart.html">باغداری</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
+                            {% if request.user.is_authenticated %}
+                                <li><a href="#">مشاوره</a>
+                                    <ul class="header__menu__dropdown">
+                                        <li><a href="{% url 'ticket:add_ticket' %}">ایجاد تیکت</a></li>
+                                        <li><a href="{% url 'ticket:ticket_list' %}">لیست تیکت ها</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li><a href="{% url 'ticket:add_ticket' %}">ایجاد تیکت</a></li>
+                            {% endif %}
                             <li><a href="./blog.html">بلاگ</a></li>
                             <li><a href="{% url 'product:contact' %}">تماس با ما</a></li>
                         </ul>
@@ -185,7 +221,6 @@
                 <div class="col-lg-2">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                             <li><a href="{% url 'cart:cart_details' %}"><i class="fa fa-shopping-bag"></i> <span>
                                 {% with total_items=cart|length %}
                                     {% if total_items > 0 %}

@@ -1,0 +1,19 @@
+{% for dis_pro in discount_product %}
+    <div class="col-lg-4">
+        <div class="product__discount__item">
+            <div class="product__discount__item__pic set-bg"
+                data-setbg="{{ dis_pro.image.url }}">
+                <div class="product__discount__percent">-{{ dis_pro.discount }}</div>
+                <ul class="product__item__pic__hover">
+                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                </ul>
+            </div>
+            <div class="product__discount__item__text">
+                <a href="{{ dis_pro.get_absolute_url }}"><span>{{ dis_pro.name }}</span></a>
+                <div class="product__item__price" style="direction: rtl;">{{ dis_pro.price }} تومان<span> {{ dis_pro.befor_discount }}تومان</span></div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

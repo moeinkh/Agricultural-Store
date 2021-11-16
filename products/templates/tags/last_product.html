@@ -1,0 +1,11 @@
+{% for last in last_product %}
+    <a href="{{ last.get_absolute_url }}" class="latest-product__item">
+        <div class="latest-product__item__pic">
+            <img src="{{ last.image.url }}" alt="{{ last.name }}">
+        </div>
+        <div class="latest-product__item__text">
+            <h6>{{ last.name }}</h6>
+            <span style="direction: rtl;">{{ last.price }} تومان</span>
+        </div>
+    </a>
+{% endfor %}

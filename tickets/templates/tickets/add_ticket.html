@@ -1,0 +1,92 @@
+{% extends "products/index.html" %}
+{% load static %}
+
+
+{% block title %}
+    ایجاد تیکت         
+{% endblock title %}
+
+
+{% block content %}
+    
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'products/img/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>ایجاد تیکت</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'product:home' %}">خانه</a>
+                            <span>ایجاد تیکت</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Contact Form Begin -->
+    <div class="contact-form spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="contact__form__title">
+                        <h2>ارسال تیکت</h2>
+                    </div>
+                </div>
+            </div>
+            <form method="post" action="{% url 'ticket:add_ticket' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <label for="username">نام و نام خانوادگی:</label>
+                        <input type="text" id="username" value="{% if request.user.first_name %}{{ request.user.first_name }} {{ request.user.last_name }}{% else %}{{ request.user.username }}
+                        {% endif %}" disabled>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <label for="email">ایمیل:</label>
+                        <input type="text" id="email" value="{{ request.user.email }}" disabled>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <label for="subject">موضوع:</label>
+                        <select name="subject" id="subject" class="form-select mb-2" aria-label="Default select example">
+                            <option selected>. . . .</option>
+                            <option value="1">کشاورزی</option>
+                            <option value="2">باغبانی</option>
+                            <option value="3">فروش</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <textarea name="text" placeholder="سوال شما"></textarea>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <label for="image">عکس:</label>
+                        <input style="border: none;" type="file" name="image" class="form-control-file" id="image">
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" class="site-btn">ارسال</button>
+                    </div>
+                </div>
+                
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                                (<strong>{{ field.label|escape }}</strong>)
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %} 
+            </form>
+        </div>
+    </div>
+    <!-- Contact Form End -->
+{% endblock content %}  

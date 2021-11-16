@@ -88,23 +88,39 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="contact__form__title">
-                        <h2>Leave Message</h2>
+                        <h2>گذاشتن پیام</h2>
                     </div>
                 </div>
             </div>
-            <form action="#">
+            <form method="post">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
-                        <input type="text" placeholder="Your name">
+                        <input type="text" name="name" value="{{ request.user.get_full_name }}" placeholder="اسم شما">
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <input type="text" placeholder="Your Email">
+                        <input type="email" name="email" value="{{ request.user.email }}" placeholder="ایمیل شما">
                     </div>
                     <div class="col-lg-12 text-center">
-                        <textarea placeholder="Your message"></textarea>
-                        <button type="submit" class="site-btn">SEND MESSAGE</button>
+                        <textarea name="text" placeholder="پیام شما"></textarea>
+                        <button type="submit" class="site-btn">ارسال پیام</button>
                     </div>
                 </div>
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                                (<strong>{{ field.label|escape }}</strong>)
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %} 
             </form>
         </div>
     </div>
