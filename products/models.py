@@ -18,7 +18,7 @@ class Category(MPTTModel):
 
     parent = TreeForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children', verbose_name='زیر دسته')
     name = models.CharField('نام', max_length=128)
-    slug = models.SlugField('اسلاگ', max_length=128)
+    slug = models.SlugField('اسلاگ', allow_unicode=True, max_length=128)
     image = models.ImageField('عکس', upload_to='product/category', null=True, blank=True,)
 
     created_at = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
@@ -40,7 +40,7 @@ class Brand(models.Model):
         verbose_name_plural = 'برند ها'
 
     name = models.CharField('نام', max_length=128)
-    slug = models.SlugField('اسلاگ', max_length=128)
+    slug = models.SlugField('اسلاگ', allow_unicode=True, max_length=128)
     image = models.ImageField('عکس', upload_to='product/brand', null=True, blank=True)
 
     created_at = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
@@ -76,7 +76,7 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, verbose_name='برند')
 
     name = models.CharField('نام', max_length=128)
-    slug = models.SlugField('اسلاگ', max_length=128)
+    slug = models.SlugField('اسلاگ', allow_unicode=True, max_length=128)
     image = models.ImageField('عکس محصول', upload_to='product/product', null=True, blank=True)
     country = models.CharField('کشور', max_length=128)
     weight = models.CharField('وزن', max_length=10, null=True, blank=True)

@@ -3,3 +3,6 @@
 
 # media
 /product
+
+# db
+db.sqlite3
