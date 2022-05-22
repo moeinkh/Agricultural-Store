@@ -7,17 +7,20 @@ from cart.forms import CartAddProductForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
+from blog.models import Blog
 # Create your views here.
 
 def home(request):
     categories = Category.objects.all()
     product = Product.objects.filter(available=True)
     banner = Banner.objects.first()
+    blogs = Blog.objects.all()[:3]
 
     return render(request, 'products/home.html', {
         'product': product,
         'categories': categories,
         'banner': banner,
+        'blogs': blogs,
     })    
 
 def product_list(request, category_slug=None, brand_slug=None):

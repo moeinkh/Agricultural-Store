@@ -103,7 +103,7 @@
                 {% else %}
                     <li><a href="{% url 'ticket:add_ticket' %}">ایجاد تیکت</a></li>
                 {% endif %}
-                <li><a href="./blog.html">بلاگ</a></li>
+                <li><a href="{% url 'blog:blog' %}">بلاگ</a></li>
                 <li><a href="{% url 'product:contact' %}">تماس با ما</a></li>
             </ul>
         </nav>
@@ -213,7 +213,7 @@
                             {% else %}
                                 <li><a href="{% url 'ticket:add_ticket' %}">ایجاد تیکت</a></li>
                             {% endif %}
-                            <li><a href="./blog.html">بلاگ</a></li>
+                            <li><a href="{% url 'blog:blog' %}">بلاگ</a></li>
                             <li><a href="{% url 'product:contact' %}">تماس با ما</a></li>
                         </ul>
                     </nav>
